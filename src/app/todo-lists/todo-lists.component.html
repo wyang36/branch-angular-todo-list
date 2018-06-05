@@ -1,1 +1,1 @@
-<a class="item" [ngClass]="{'active': checkIsActive(list.id)}" *ngFor="let list of lists" (click)="onClick(list.id)">{{list.title}}</a>
+<a class="item" *ngFor="let list of lists" [routerLink]="['/lists', list.id]" routerLinkActive="active">{{list.title}}</a>

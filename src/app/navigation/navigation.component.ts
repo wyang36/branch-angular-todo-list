@@ -1,34 +1,30 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataStorageService } from '../todo-lists/data-storage.service';
 import { TodoListService } from '../todo-lists/todo-list.service';
-import { Subscription } from 'rxjs';
-import { TodoService } from '../todo-lists/todos/todo.service';
+import { TodoCompletedService } from '../todo-lists/todos/todo-completed.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css']
 })
-export class NavigationComponent implements OnInit, OnDestroy {
+export class NavigationComponent implements OnInit {
   isViewingCompleted: boolean = false;
   searchField: string = '';
-  subscription: Subscription;
 
-  constructor(private dataStorageService: DataStorageService, private todoListService: TodoListService, private todoService: TodoService) { }
+  constructor(private dataStorageService: DataStorageService, private todoListService: TodoListService,
+    private todoCompletedService: TodoCompletedService, private router: Router) { }
 
   ngOnInit() {
     this.dataStorageService.getLists();
-    this.subscription = this.todoListService.updateViewingCompletedStatus.subscribe((status: boolean) => {
-      this.isViewingCompleted = status;
+    this.router.events.subscribe((event) => {
+      if (this.router.url === '/completed') {
+        this.isViewingCompleted = true;
+      } else {
+        this.isViewingCompleted = false;
+      }
     })
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  onViewCompleted() {
-    this.todoListService.modifyViewingCompletedStatus(true);
   }
 
   onAddTodoList() {
@@ -36,6 +32,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange() {
-    this.todoService.updateFilter(this.searchField);
+    this.todoCompletedService.updateFilter(this.searchField);
   }
 }

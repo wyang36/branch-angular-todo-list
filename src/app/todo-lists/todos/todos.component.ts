@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { Todo } from '../todos/todo.model';
 import { TodoService } from './todo.service';
 import { DataStorageService } from '../data-storage.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { TodoCompletedService } from './todo-completed.service';
 
 @Component({
   selector: 'app-todos',
@@ -11,38 +13,48 @@ import { DataStorageService } from '../data-storage.service';
   styleUrls: ['./todos.component.css']
 })
 export class TodosComponent implements OnInit, OnDestroy {
-  currentListId: string;
-  listSubscription: Subscription;
   todoSubscription: Subscription;
-  viewCompletedSubscription: Subscription;
-  todos: Todo[];
+  completedTodoSubscription: Subscription;
+  todos: Todo[] = [];
   isListSelected: boolean = false;
   isViewingCompleted: boolean = false;
 
-  constructor(private todoListService: TodoListService, private todoService: TodoService, private dataStorageService: DataStorageService) { }
+  constructor(private todoListService: TodoListService, private todoService: TodoService,
+    private dataStorageService: DataStorageService, private todoCompletedService: TodoCompletedService,
+    private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.listSubscription = this.todoListService.updateCurrentListId.subscribe((id: string) => {
-      this.currentListId = id;
-      this.isListSelected = this.currentListId !== undefined;
-      this.todoListService.setTodosOfCurrentList();
-    });
-    this.todoSubscription = this.todoService.updateTodos.subscribe((todos: Todo[]) => {
-      //if (this.isViewingCompleted)
-      //  this.todoListService.setTodosOfCompleted();
-      this.todos = todos;
-    });
-    this.viewCompletedSubscription = this.todoListService.updateViewingCompletedStatus.subscribe((status: boolean) => {
-      this.isViewingCompleted = status;
-      if (this.isViewingCompleted)
-        this.todoListService.setTodosOfCompleted();
+    this.route.params.subscribe((params: Params) => {
+      if (this.router.url !== '/completed') {
+        if (this.todoListService.checkIfListExist(params['id'])) {
+          this.todoListService.ChooseCurrentList(params['id']);
+          this.todoListService.setTodosOfCurrentList();
+        } else {
+          this.router.navigate(['/']);
+        }
+      }
     })
+    this.todoSubscription = this.todoService.updateTodos.subscribe((todos: Todo[]) => {
+      if (!this.isViewingCompleted)
+        this.todos = todos;
+    });
+    this.completedTodoSubscription = this.todoCompletedService.updateCompletedTodos.subscribe((todos: Todo[]) => {
+      if (this.isViewingCompleted)
+        this.todos = todos;
+    })
+
+    if (this.router.url === '/completed') {
+      this.isViewingCompleted = true;
+      this.todos = this.todoCompletedService.getFilteredTodos();
+    } else {
+      this.isViewingCompleted = false;
+      this.todos = this.todoService.getAllTodos();
+    }
   }
 
   ngOnDestroy() {
-    this.listSubscription.unsubscribe();
     this.todoSubscription.unsubscribe();
-    this.viewCompletedSubscription.unsubscribe();
+    this.completedTodoSubscription.unsubscribe();
   }
 
   onAddTodo() {
@@ -51,8 +63,9 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   onDeleteList() {
     if (this.todos.length === 0) {
-      this.dataStorageService.deleteList(this.currentListId);
+      this.dataStorageService.deleteList(this.todoListService.currentListId);
       this.isListSelected = false;
+      this.router.navigate(['/']);
     }
   }
 

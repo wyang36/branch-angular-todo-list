@@ -4,8 +4,6 @@ import { Subject } from "rxjs";
 export class TodoService {
     todos: Todo[] = [];
 
-    searchField: string = '';
-
     updateTodos = new Subject<Todo[]>();
     updateAddStatus = new Subject<boolean>();
     updateEditStatus = new Subject<boolean>();
@@ -20,35 +18,19 @@ export class TodoService {
 
     setTodos(todos: Todo[]) {
         this.todos = todos;
-        this.updateTodos.next(this.getFilteredTodos());
+        this.updateTodos.next(this.getAllTodos());
     }
 
     getAllTodos() {
-        return this.todos.slice();
-    }
-
-    getFilteredTodos() {
-        const filteredTodos: Todo[] = [];
-        this.todos.forEach((todo) => {
-            if (todo.content.toUpperCase().includes(this.searchField.toUpperCase()) || todo.title.toUpperCase().includes(this.searchField.toUpperCase()))
-                filteredTodos.push(todo);
-        });
-
-        filteredTodos.sort((a, b) => {
-            if (a.dueDate > b.dueDate)
-                return 1;
-            else if (a.dueDate < b.dueDate)
-                return -1;
-            else
-                return 0
-        });
-
-        return filteredTodos;
-    }
-
-    updateFilter(newFilter: string) {
-        this.searchField = newFilter;
-        this.updateTodos.next(this.getFilteredTodos());
+        return this.todos.slice()
+            .sort((a, b) => {
+                if (a.dueDate > b.dueDate)
+                    return 1;
+                else if (a.dueDate < b.dueDate)
+                    return -1;
+                else
+                    return 0
+            });
     }
 
     getActiveTodo() {
@@ -85,12 +67,12 @@ export class TodoService {
             if (todo.id === this.todos[index].id)
                 this.todos[index] = todo;
         }
-        this.updateTodos.next(this.getFilteredTodos());
+        this.updateTodos.next(this.getAllTodos());
     }
 
     addTodo(todo: Todo) {
         this.todos.push(todo);
-        this.updateTodos.next(this.getFilteredTodos());
+        this.updateTodos.next(this.getAllTodos());
     }
 
     deleteTodo(id: string) {
@@ -98,7 +80,7 @@ export class TodoService {
             if (id === this.todos[index].id)
                 this.todos.splice(index, 1)
         }
-        this.updateTodos.next(this.getFilteredTodos());
+        this.updateTodos.next(this.getAllTodos());
     }
 
 }

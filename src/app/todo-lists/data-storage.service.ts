@@ -5,15 +5,18 @@ import { TodoList } from "./todo-list.model";
 import { Todo } from ".//todos/todo.model";
 import { TodoListService } from "./todo-list.service";
 import { TodoService } from "./todos/todo.service";
+import { TodoCompletedService } from "./todos/todo-completed.service";
 
 @Injectable()
 export class DataStorageService {
-    constructor(private http: HttpClient, private todoListService: TodoListService, private todoSerivice: TodoService) { }
+    constructor(private http: HttpClient, private todoListService: TodoListService, private todoSerivice: TodoService, private todoCompletedService: TodoCompletedService) { }
 
     getLists() {
         this.http.get('https://damp-sea-61125.herokuapp.com/api/todolists')
             .pipe(map((todolists: TodoList[]) => {
                 return todolists.map((todolist) => {
+                    if (!todolist.todos)
+                        todolist.todos = [];
                     return {
                         ...todolist,
                         id: todolist['_id'],
@@ -36,8 +39,10 @@ export class DataStorageService {
     }
 
     addList(list: TodoList) {
-        this.http.post('https://damp-sea-61125.herokuapp.com/api/todolist', list)
+        return this.http.post('https://damp-sea-61125.herokuapp.com/api/todolist', list)
             .pipe(map((todolist: TodoList) => {
+                if (!todolist.todos)
+                    todolist.todos = [];
                 return {
                     ...todolist,
                     id: todolist['_id'],
@@ -50,17 +55,12 @@ export class DataStorageService {
 
                     })
                 }
-            }))
-            .subscribe(
-                (todolist: TodoList) => {
-                    this.todoListService.addList(todolist)
-                }
-            )
+            }));
     }
 
     modifyActiveList() {
         const oldList = this.todoListService.getActiveListById();
-        const updatedTodos = this.todoSerivice.getFilteredTodos();
+        const updatedTodos = this.todoSerivice.getAllTodos();
         const newList = {
             ...oldList,
             todos: updatedTodos
@@ -68,6 +68,8 @@ export class DataStorageService {
         this.http.put('https://damp-sea-61125.herokuapp.com/api/todolist', newList)
             .pipe(map((todolists: TodoList[]) => {
                 return todolists.map((todolist) => {
+                    if (!todolist.todos)
+                        todolist.todos = [];
                     return {
                         ...todolist,
                         id: todolist['_id'],
@@ -91,7 +93,7 @@ export class DataStorageService {
 
     modifyCompletedList() {
         const oldList = this.todoListService.getCompletedList();
-        const updatedTodos = this.todoListService.getCompletedTodos();
+        const updatedTodos = this.todoCompletedService.getAllCompletedTodos();
         const newList = {
             ...oldList,
             todos: updatedTodos
@@ -99,6 +101,8 @@ export class DataStorageService {
         this.http.put('https://damp-sea-61125.herokuapp.com/api/todolist', newList)
             .pipe(map((todolists: TodoList[]) => {
                 return todolists.map((todolist) => {
+                    if (!todolist.todos)
+                        todolist.todos = [];
                     return {
                         ...todolist,
                         id: todolist['_id'],

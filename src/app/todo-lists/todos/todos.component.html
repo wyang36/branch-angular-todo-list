@@ -1,15 +1,9 @@
-<div class="ui basic segment" *ngIf="(!isListSelected && !isViewingCompleted); else todoContainer">
-  Please select a list
-</div>
-<ng-template #todoContainer>
-  <div class="ui hidden divider"></div>
-  <div class="ui container">
-    <div class="ui basic segment" *ngIf="!isViewingCompleted">
-      <button class="ui button green" (click)="onAddTodo()">
-        <i class="plus icon"></i>Add todo
-      </button>
-      <button class="ui button red" (click)="onDeleteList()" *ngIf="todos.length===0">Delete List</button>
-    </div>
-    <app-todo-item *ngFor="let item of todos" [todo]="item" [isCompleted]="isViewingCompleted"></app-todo-item>
+<div class="ui container">
+  <div class="ui basic segment" *ngIf="!isViewingCompleted">
+    <button class="ui button green" (click)="onAddTodo()">
+      <i class="plus icon"></i>Add todo
+    </button>
+    <button class="ui button red" (click)="onDeleteList()" [disabled]="todos.length>0">Delete List</button>
   </div>
-</ng-template>
+  <app-todo-item *ngFor="let item of todos" [todo]="item" [isCompleted]="isViewingCompleted"></app-todo-item>
+</div>

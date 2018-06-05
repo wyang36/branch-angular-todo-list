@@ -3,10 +3,11 @@ import { Todo } from "./todos/todo.model";
 import { Subject } from "rxjs";
 import { TodoService } from "./todos/todo.service";
 import { Injectable } from "@angular/core";
+import { TodoCompletedService } from "./todos/todo-completed.service";
 
 @Injectable()
 export class TodoListService {
-    constructor(private todoService: TodoService) { }
+    constructor(private todoService: TodoService, private todoCompletedService: TodoCompletedService) { }
 
     private todoLists: TodoList[] = [];
     private completed: TodoList;
@@ -14,9 +15,7 @@ export class TodoListService {
     updatedLists = new Subject<TodoList[]>();
     updateAddListStatus = new Subject<boolean>();
     updateCurrentListId = new Subject<string>();
-    updateViewingCompletedStatus = new Subject<boolean>();
 
-    isViewingCompleted: boolean = false;
     isAddingList: boolean = false;
     currentListId: string;
 
@@ -33,6 +32,10 @@ export class TodoListService {
         this.todoLists = activeLists;
         this.completed = completedList;
         this.updatedLists.next(this.todoLists.slice());
+        if (this.currentListId !== undefined)
+            this.setTodosOfCurrentList();
+        if (completedList)
+            this.setTodosOfCompleted();
     }
 
     addList(list: TodoList) {
@@ -47,21 +50,38 @@ export class TodoListService {
         })
     }
 
+    checkIfListExist(id: string) {
+        const index = this.todoLists.findIndex((list: TodoList) => {
+            return list.id === id;
+        });
+        return (index >= 0);
+    }
+
     setTodosOfCurrentList() {
-        const todos = this.todoLists.find((list: TodoList) => {
+        const currentlist = this.todoLists.find((list: TodoList) => {
             return list.id === this.currentListId;
-        }).todos.map((todo: Todo) => {
-            return {
-                ...todo,
-                id: todo['_id']
-            }
-        })
-        this.todoService.setTodos(todos);
+        });
+        if (currentlist) {
+            const todos = currentlist.todos.map((todo: Todo) => {
+                return {
+                    ...todo,
+                    id: todo['_id']
+                }
+            })
+            this.todoService.setTodos(todos);
+        }
     }
 
     setTodosOfCompleted() {
-        const todos = this.completed.todos;
-        this.todoService.setTodos(todos);
+        if (this.completed) {
+            const todos = this.completed.todos.map((todo: Todo) => {
+                return {
+                    ...todo,
+                    id: todo['_id']
+                }
+            });
+            this.todoCompletedService.setTodos(todos);
+        }
     }
 
     getActiveLists() {
@@ -72,28 +92,23 @@ export class TodoListService {
         return { ...this.completed };
     }
 
-    getCompletedTodos() {
-        return this.completed.todos.slice();
-    }
-
     modifyAddListStatus(addStatus: boolean) {
         this.isAddingList = addStatus;
         this.updateAddListStatus.next(this.isAddingList);
     }
 
-    modifyViewingCompletedStatus(isViewingCompleted: boolean) {
-        this.isViewingCompleted = isViewingCompleted;
-        this.updateViewingCompletedStatus.next(this.isViewingCompleted);
-    }
-
     ChooseCurrentList(id: string) {
         this.currentListId = id;
-        this.modifyViewingCompletedStatus(false);
         this.updateCurrentListId.next(id);
     }
 
     MoveTodoToCompleted(todo: Todo) {
-        this.completed.todos.push(todo);
+        if (this.completed)
+            this.completed.todos.push(todo);
+        else
+            this.completed = new TodoList(null, 'completed todos', [todo], true);
+        this.setTodosOfCompleted();
+
         this.todoService.deleteTodo(todo.id);
         this.updatedLists.next(this.todoLists.slice());
 
