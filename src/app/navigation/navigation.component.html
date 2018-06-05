@@ -1,0 +1,25 @@
+<div class="ui attached stackable borderless center aligned menu">
+    <a class="item" (click)="sidebar.toggle()">
+      <i class="sidebar icon"></i> Lists
+    </a>
+    <a class="item" (click)="onAddTodoList()">
+      <i class="plus icon"></i>Add List
+    </a>
+    <a class="item" [ngClass]="{'active': isViewingCompleted}" (click)="onViewCompleted()">
+        View Completed
+      </a>
+    <div class="item" *ngIf="isViewingCompleted">
+      <div class="ui icon input">
+        <input type="text" placeholder="Search..." [(ngModel)]="searchField" (ngModelChange)="onFilterChange()">
+        <i class="search icon"></i>
+      </div>
+    </div>
+  </div>
+  <sui-sidebar-container class="ui bottom attached segment">
+    <sui-sidebar class="inverted vertical" #sidebar (click)="sidebar.close()">
+      <app-todo-lists></app-todo-lists>
+    </sui-sidebar>
+    <sui-sidebar-sibling [isDimmedWhenVisible]="true">
+      <app-todos></app-todos>
+    </sui-sidebar-sibling>
+  </sui-sidebar-container>

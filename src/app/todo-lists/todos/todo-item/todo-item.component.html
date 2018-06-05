@@ -1,0 +1,12 @@
+<div class="ui padded segment">
+    <div *ngIf="isCompleted" class="ui top attached label olive">Completed</div>
+    <div *ngIf="isOverdue && !isCompleted" class="ui top attached label red">Overdue</div>
+    <h2 class="ui header">{{todo.title}}</h2>
+    <div class="three tiny ui buttons" *ngIf="!isCompleted" style="max-width: 300px;">
+        <button class="ui blue basic button" (click)="onEdit()">Edit</button>
+        <button class="ui red basic button" (click)="onDelete()">Delete</button>
+        <button class="ui green basic button" (click)="onComplete()">Completed!</button>
+    </div>  
+    <p><span class="date">Due Date: {{todo.dueDate | date}}</span></p>
+    <p>{{todo.content}}</p>
+  </div>

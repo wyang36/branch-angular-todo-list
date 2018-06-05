@@ -1,0 +1,17 @@
+<div class="ui dimmer modals page" [ngClass]="{'active': isActive}">
+    <div class="ui modal" [ngClass]="{'active': isActive}">
+      <div class="header">Add todo list</div>
+      <div class="content">
+        <form class="ui form" (ngSubmit)="onAddList(f)" #f="ngForm">
+          <div class="required field">
+            <label>Title</label>
+            <input type="text" name="title" id="title" ngModel required>
+          </div>
+          <div class="actions">
+            <button class="ui green button" type="submit" [disabled]="!f.valid">Add</button>
+            <button class="ui red button" type="button" (click)="onRemoveModal();">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

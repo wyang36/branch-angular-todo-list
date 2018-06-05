@@ -1,0 +1,21 @@
+<div class="ui dimmer modals page" [ngClass]="{'active': isActive}">
+    <div class="ui basic modal" [ngClass]="{'active': isActive}">
+      <div class="ui icon header">
+        <i class="calendar check outline icon"></i>
+        Move Note to Completed
+      </div>
+      <div class="content" style="text-align:center">
+        <p>Are you sure you want to move {{todo.title}} to completed? You cannot undo this action.</p>
+      </div>
+      <div class="actions" style="text-align:center">
+        <div class="ui green ok inverted button" (click)="onMove()">
+          <i class="checkmark icon"></i>
+          Yes
+        </div>
+        <div class="ui red basic cancel inverted button" (click)="onRemoveModal()">
+          <i class="remove icon"></i>
+          No
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,21 @@
+<div class="ui dimmer modals page" [ngClass]="{'active': isActive}">
+    <div class="ui basic modal" [ngClass]="{'active': isActive}">
+      <div class="ui icon header">
+        <i class="trash icon"></i>
+        Delete Note
+      </div>
+      <div class="content" style="text-align:center">
+        <p>Are you sure you want to delete {{todo.title}}?</p>
+      </div>
+      <div class="actions" style="text-align:center">
+        <div class="ui green ok inverted button" (click)="onDelete()">
+          <i class="checkmark icon"></i>
+          Yes
+        </div>
+        <div class="ui red basic cancel inverted button" (click)="onRemoveModal()">
+          <i class="remove icon"></i>
+          No
+        </div>
+      </div>
+    </div>
+  </div>
