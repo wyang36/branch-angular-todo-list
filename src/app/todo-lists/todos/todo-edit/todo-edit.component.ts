@@ -6,8 +6,7 @@ import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-todo-edit',
-  templateUrl: './todo-edit.component.html',
-  styleUrls: ['./todo-edit.component.css']
+  templateUrl: './todo-edit.component.html'
 })
 export class TodoEditComponent implements OnInit {
   editForm: FormGroup;

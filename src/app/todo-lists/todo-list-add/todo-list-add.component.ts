@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo-list-add',
-  templateUrl: './todo-list-add.component.html',
-  styleUrls: ['./todo-list-add.component.css']
+  templateUrl: './todo-list-add.component.html'
 })
 export class TodoListAddComponent {
   @ViewChild('f') editForm: NgForm;

@@ -5,8 +5,7 @@ import { TodoService } from '../../todo-lists/todos/todo.service';
 
 @Component({
   selector: 'app-modals',
-  templateUrl: './modals.component.html',
-  styleUrls: ['./modals.component.css']
+  templateUrl: './modals.component.html'
 })
 export class ModalsComponent implements OnInit, OnDestroy {
   isAddingList: boolean = false;

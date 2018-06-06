@@ -1,0 +1,17 @@
+@import '../../../../sass/variables';
+
+.ui.segment {
+    margin: $segment-margin;
+}
+
+.ui.label.overdue {
+    background-color: $button-red;
+    border-color: $button-red;
+    color: #fff;
+}
+
+.ui.label.completed {
+    background-color: $button-green;
+    border-color: $button-green;
+    color: #fff;
+}

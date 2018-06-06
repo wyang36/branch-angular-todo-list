@@ -1,9 +1,9 @@
 <div class="ui container">
   <div class="ui basic segment" *ngIf="!isViewingCompleted">
     <button class="ui button green" (click)="onAddTodo()">
-      <i class="plus icon"></i>Add todo
+      <i class="plus icon"></i>Add to-do
     </button>
-    <button class="ui button red" (click)="onDeleteList()" [disabled]="todos.length>0">Delete List</button>
+    <button class="ui button inverted red" (click)="onDeleteList()" [disabled]="todos.length>0">Delete List</button>
   </div>
   <app-todo-item *ngFor="let item of todos" [todo]="item" [isCompleted]="isViewingCompleted"></app-todo-item>
 </div>

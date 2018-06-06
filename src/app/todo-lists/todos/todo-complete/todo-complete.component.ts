@@ -6,8 +6,7 @@ import { TodoListService } from '../../todo-list.service';
 
 @Component({
   selector: 'app-todo-complete',
-  templateUrl: './todo-complete.component.html',
-  styleUrls: ['./todo-complete.component.css']
+  templateUrl: './todo-complete.component.html'
 })
 export class TodoCompleteComponent implements OnInit {
   todo: Todo;

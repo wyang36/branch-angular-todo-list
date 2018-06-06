@@ -5,8 +5,7 @@ import { DataStorageService } from '../../data-storage.service';
 
 @Component({
   selector: 'app-todo-delete',
-  templateUrl: './todo-delete.component.html',
-  styleUrls: ['./todo-delete.component.css']
+  templateUrl: './todo-delete.component.html'
 })
 export class TodoDeleteComponent implements OnInit {
   todo: Todo;

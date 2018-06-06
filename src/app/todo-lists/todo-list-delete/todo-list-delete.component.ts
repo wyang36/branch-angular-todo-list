@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo-list-delete',
-  templateUrl: './todo-list-delete.component.html',
-  styleUrls: ['./todo-list-delete.component.css']
+  templateUrl: './todo-list-delete.component.html'
 })
 export class TodoListDeleteComponent implements OnInit {
   list: TodoList;

@@ -6,8 +6,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo-lists',
-  templateUrl: './todo-lists.component.html',
-  styleUrls: ['./todo-lists.component.css']
+  templateUrl: './todo-lists.component.html'
 })
 export class TodoListsComponent implements OnInit, OnDestroy {
   lists: TodoList[];

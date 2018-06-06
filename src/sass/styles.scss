@@ -1,0 +1,26 @@
+@import './variables';
+
+body {
+    background-color: $background-color !important;
+}
+
+.menu {
+    background-color: $menu-color !important;
+    font-family: $header-font !important;
+
+    .item {
+        font-weight: 600 !important;
+    }
+}
+
+.ui.button.green {
+    background-color: $button-green;
+}
+
+.ui.button.red {
+    background-color: $button-red;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: $header-font !important;
+}

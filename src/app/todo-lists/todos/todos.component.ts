@@ -9,8 +9,7 @@ import { TodoCompletedService } from './todo-completed.service';
 
 @Component({
   selector: 'app-todos',
-  templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.css']
+  templateUrl: './todos.component.html'
 })
 export class TodosComponent implements OnInit, OnDestroy {
   todoSubscription: Subscription;

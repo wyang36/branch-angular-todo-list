@@ -1,6 +1,6 @@
 <div class="ui attached stackable borderless center aligned menu">
   <a class="item" routerLink="/">
-    <i class="home icon"></i> Home
+    <i class="home icon"></i> HOME
   </a>
   <a class="item" (click)="sidebar.toggle()">
     <i class="sidebar icon"></i> Lists
@@ -19,7 +19,7 @@
   </div>
 </div>
 <sui-sidebar-container class="ui bottom attached segment">
-  <sui-sidebar class="inverted vertical" #sidebar (click)="sidebar.close()">
+  <sui-sidebar class="vertical" #sidebar (click)="sidebar.close()" direction="left">
     <app-todo-lists></app-todo-lists>
   </sui-sidebar>
   <sui-sidebar-sibling [isDimmedWhenVisible]="true">
