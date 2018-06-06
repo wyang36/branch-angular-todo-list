@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Todo } from '../todo.model';
 import { TodoService } from '../todo.service';
 import { DataStorageService } from '../../data-storage.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo-delete',
@@ -10,21 +9,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./todo-delete.component.css']
 })
 export class TodoDeleteComponent implements OnInit {
-  isActive: boolean = false;
-  subscription: Subscription;
-  todo: Todo = new Todo('', '', new Date(), '');
+  todo: Todo;
 
   constructor(private todoService: TodoService, private dataStorageService: DataStorageService) { }
 
   ngOnInit() {
-    this.subscription = this.todoService.updateDeleteStatus.subscribe((isDeleting: boolean) => {
-      this.isActive = isDeleting;
-      this.todo = this.todoService.getActiveTodo();
-    })
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.todo = this.todoService.getActiveTodo();
   }
 
   onDelete() {
@@ -35,7 +25,7 @@ export class TodoDeleteComponent implements OnInit {
 
   onRemoveModal() {
     this.todoService.modifyDelete(false, null);
-    this.todo = new Todo('', '', new Date(), '');
+    this.todo = null;
   }
 
 }

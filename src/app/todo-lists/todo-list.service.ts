@@ -14,9 +14,11 @@ export class TodoListService {
 
     updatedLists = new Subject<TodoList[]>();
     updateAddListStatus = new Subject<boolean>();
+    updateDeleteListStatus = new Subject<boolean>();
     updateCurrentListId = new Subject<string>();
 
     isAddingList: boolean = false;
+    isDeletingList: boolean = false;
     currentListId: string;
 
     setLists(todolists: TodoList[]) {
@@ -95,6 +97,11 @@ export class TodoListService {
     modifyAddListStatus(addStatus: boolean) {
         this.isAddingList = addStatus;
         this.updateAddListStatus.next(this.isAddingList);
+    }
+
+    modifyDeleteListStatus(addStatus: boolean) {
+        this.isDeletingList = addStatus;
+        this.updateDeleteListStatus.next(this.isDeletingList);
     }
 
     ChooseCurrentList(id: string) {

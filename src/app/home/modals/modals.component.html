@@ -1,0 +1,5 @@
+<app-todo-list-add *ngIf="isAddingList"></app-todo-list-add>
+<app-todo-list-delete *ngIf="isDeletingList"></app-todo-list-delete>
+<app-todo-edit *ngIf="isEditingTodo" [editMode]="editMode"></app-todo-edit>
+<app-todo-delete *ngIf="isDeletingTodo"></app-todo-delete>
+<app-todo-complete *ngIf="isCompletingTodo"></app-todo-complete>

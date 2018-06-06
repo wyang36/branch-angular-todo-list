@@ -16,7 +16,6 @@ export class TodosComponent implements OnInit, OnDestroy {
   todoSubscription: Subscription;
   completedTodoSubscription: Subscription;
   todos: Todo[] = [];
-  isListSelected: boolean = false;
   isViewingCompleted: boolean = false;
 
   constructor(private todoListService: TodoListService, private todoService: TodoService,
@@ -62,11 +61,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
 
   onDeleteList() {
-    if (this.todos.length === 0) {
-      this.dataStorageService.deleteList(this.todoListService.currentListId);
-      this.isListSelected = false;
-      this.router.navigate(['/']);
-    }
+    this.todoListService.modifyDeleteListStatus(true);
   }
 
 }

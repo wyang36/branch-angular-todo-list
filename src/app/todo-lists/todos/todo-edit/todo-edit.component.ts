@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Todo } from '../todo.model';
 import { TodoService } from '../todo.service';
-import { Subscription } from 'rxjs';
 import { DataStorageService } from '../../data-storage.service';
 
 @Component({
@@ -10,40 +9,34 @@ import { DataStorageService } from '../../data-storage.service';
   templateUrl: './todo-edit.component.html',
   styleUrls: ['./todo-edit.component.css']
 })
-export class TodoEditComponent implements OnInit, OnDestroy {
-  @ViewChild('f') editForm: NgForm;
-  isActive: boolean = false;
-  editMode: boolean = false;
+export class TodoEditComponent implements OnInit {
+  editForm: FormGroup;
+  @Input() editMode: boolean = false;
   todo: Todo;
   today: Date = new Date();
   yesterday: Date = new Date(new Date().setDate(new Date().getDate() - 1));
-  editStatusSubscription: Subscription;
-  addStatusSubscription: Subscription;
 
   constructor(private todoService: TodoService, private dataStorageService: DataStorageService) { }
 
   ngOnInit() {
-    this.addStatusSubscription = this.todoService.updateAddStatus.subscribe((isAdding: boolean) => {
-      this.isActive = isAdding || this.todoService.isEditingTodo;
-    })
-
-    this.editStatusSubscription = this.todoService.updateEditStatus.subscribe((isEditing: boolean) => {
-      this.editMode = isEditing;
-      this.isActive = this.todoService.isAddingTodo || this.todoService.isEditingTodo;
-      if (this.editMode && this.isActive) {
-        this.todo = this.todoService.getActiveTodo();
-        this.editForm.setValue({
-          title: this.todo.title,
-          content: this.todo.content,
-          dueDate: this.todo.dueDate
-        })
-      }
-    })
+    this.initForm();
   }
 
-  ngOnDestroy() {
-    this.editStatusSubscription.unsubscribe();
-    this.addStatusSubscription.unsubscribe();
+  private initForm() {
+    let title = '';
+    let dueDate = null;
+    let content = '';
+    if (this.editMode) {
+      this.todo = this.todoService.getActiveTodo();
+      title = this.todo.title;
+      dueDate = this.todo.dueDate;
+      content = this.todo.content;
+    }
+    this.editForm = new FormGroup({
+      'title': new FormControl(title, Validators.required),
+      'dueDate': new FormControl(dueDate, Validators.required),
+      'content': new FormControl(content)
+    })
   }
 
   onRemoveModal() {
@@ -52,8 +45,8 @@ export class TodoEditComponent implements OnInit, OnDestroy {
     this.editForm.reset();
   }
 
-  modifyTodo(form: NgForm) {
-    const value = form.value;
+  modifyTodo() {
+    const value = this.editForm.value;
     if (this.editMode) {
       this.todoService.updateTodo({
         ...value,

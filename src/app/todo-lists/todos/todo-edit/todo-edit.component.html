@@ -1,26 +1,26 @@
-<div class="ui dimmer modals page" [ngClass]="{'active': isActive}">
-  <div class="ui modal" [ngClass]="{'active': isActive}">
+<div class="ui dimmer modals page active">
+  <div class="ui modal active">
     <div class="header">{{editMode ? 'Update' : 'Add'}} todo</div>
     <div class="content">
-      <form class="ui form" (ngSubmit)="modifyTodo(f)" #f="ngForm">
+      <form class="ui form" [formGroup]="editForm" (ngSubmit)="modifyTodo()">
         <div class="required field">
           <label>Title</label>
-          <input type="text" name="title" id="title" ngModel required>
+          <input type="text" name="title" id="title" formControlName="title">
         </div>
         <div class="required field">
           <label>Due Date</label>
           <div class="ui left icon input">
             <i class="calendar icon"></i>
-            <input suiDatepicker name="dueDate" id="dueDate" [placeholder]="today | date" [(ngModel)]="date" pickerMode="date" [pickerMinDate]="yesterday"
-              ngModel required>
+            <input suiDatepicker name="dueDate" id="dueDate" [placeholder]="today | date" pickerMode="date" [pickerMinDate]="yesterday"
+              formControlName="dueDate">
           </div>
         </div>
         <div class="field">
-          <label>Content</label>
-          <textarea rows="2" ngModel name="content" id="content"></textarea>
+          <label>Notes</label>
+          <textarea rows="2" formControlName="content" name="content" id="content"></textarea>
         </div>
         <div class="actions">
-          <button class="ui green button" type="submit" [disabled]="!f.valid">{{editMode ? 'Update' : 'Add'}}</button>
+          <button class="ui green button" type="submit" [disabled]="!editForm.valid">{{editMode ? 'Update' : 'Add'}}</button>
           <button class="ui red button" type="button" (click)="onRemoveModal();">Cancel</button>
         </div>
       </form>
