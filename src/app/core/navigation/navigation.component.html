@@ -12,10 +12,19 @@
     View Completed
   </a>
   <div class="item" *ngIf="isViewingCompleted">
-    <div class="ui icon input">
-      <input type="text" placeholder="Search..." [(ngModel)]="searchField" (ngModelChange)="onFilterChange()">
-      <i class="search icon"></i>
+    <div class="ui search">
+      <div class="ui icon input">
+        <input type="text" placeholder="Search..." [(ngModel)]="searchField" (ngModelChange)="onFilterChange()">
+        <i class="search icon"></i>
+      </div>
+      <div class="results transition" [ngClass]="{'visible' : filteredOptions.length > 0}">
+        <span *ngFor="let title of filteredOptions" class="item result" (click)="onFilterSelect(title)">{{title}}</span>
+      </div>
     </div>
+    <!-- <sui-search class="ui search active"
+            [options]="options"
+            [searchDelay]="0"
+            ></sui-search> -->
   </div>
 </div>
 <sui-sidebar-container class="ui bottom attached segment">

@@ -32,7 +32,7 @@ export class TodoEditComponent implements OnInit {
       content = this.todo.content;
     }
     this.editForm = new FormGroup({
-      'title': new FormControl(title, Validators.required),
+      'title': new FormControl(title, [Validators.required, this.notAllSpaceValidator.bind(this)]),
       'dueDate': new FormControl(dueDate, Validators.required),
       'content': new FormControl(content)
     })
@@ -62,5 +62,13 @@ export class TodoEditComponent implements OnInit {
     }
     this.onRemoveModal();
   }
+
+    //Validator
+    notAllSpaceValidator(control: FormControl): { [s: string]: boolean } {
+      if ((control.value || '').trim().length === 0) {
+        return { 'whitespace' : true }
+      }
+      return null;
+    }
 
 }

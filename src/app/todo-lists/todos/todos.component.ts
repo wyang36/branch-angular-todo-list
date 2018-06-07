@@ -36,7 +36,7 @@ export class TodosComponent implements OnInit, OnDestroy {
       if (!this.isViewingCompleted)
         this.todos = todos;
     });
-    this.completedTodoSubscription = this.todoCompletedService.updateCompletedTodos.subscribe((todos: Todo[]) => {
+    this.completedTodoSubscription = this.todoCompletedService.updateCompletedFilteredTodos.subscribe((todos: Todo[]) => {
       if (this.isViewingCompleted)
         this.todos = todos;
     })

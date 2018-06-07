@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TodoListService } from '../todo-list.service';
 import { DataStorageService } from '../data-storage.service';
 import { TodoList } from '../todo-list.model';
@@ -9,18 +9,24 @@ import { Router } from '@angular/router';
   selector: 'app-todo-list-add',
   templateUrl: './todo-list-add.component.html'
 })
-export class TodoListAddComponent {
-  @ViewChild('f') editForm: NgForm;
+export class TodoListAddComponent implements OnInit {
+  addListForm: FormGroup;
 
   constructor(private todoListService: TodoListService, private dataStorageService: DataStorageService, private router: Router) { }
 
-  onRemoveModal() {
-    this.todoListService.modifyAddListStatus(false);
-    this.editForm.reset();
+  ngOnInit() {
+    this.addListForm = new FormGroup({
+      'title': new FormControl('', [Validators.required, this.notAllSpaceValidator.bind(this)])
+    });
   }
 
-  onAddList(form: NgForm) {
-    const value = form.value;
+  onRemoveModal() {
+    this.todoListService.modifyAddListStatus(false);
+    this.addListForm.reset();
+  }
+
+  onAddList() {
+    const value = this.addListForm.value;
     this.dataStorageService.addList({
       ...value,
       isCompletedList: false
@@ -34,4 +40,11 @@ export class TodoListAddComponent {
     this.onRemoveModal();
   }
 
+  //Validator
+  notAllSpaceValidator(control: FormControl): { [s: string]: boolean } {
+    if ((control.value || '').trim().length === 0) {
+      return { 'whitespace' : true }
+    }
+    return null;
+  }
 }

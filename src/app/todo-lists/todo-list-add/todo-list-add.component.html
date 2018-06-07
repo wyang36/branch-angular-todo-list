@@ -2,13 +2,13 @@
     <div class="ui modal active">
       <div class="header">Add to-do list</div>
       <div class="content">
-        <form class="ui form" (ngSubmit)="onAddList(f)" #f="ngForm">
+        <form class="ui form" [formGroup]="addListForm" (ngSubmit)="onAddList()">
           <div class="required field">
             <label>Title</label>
-            <input type="text" name="title" id="title" ngModel required>
+            <input type="text" name="title" id="title" formControlName="title">
           </div>
           <div class="actions">
-            <button class="ui green button" type="submit" [disabled]="!f.valid">Add</button>
+            <button class="ui green button" type="submit" [disabled]="!addListForm.valid">Add</button>
             <button class="ui red button" type="button" (click)="onRemoveModal();">Cancel</button>
           </div>
         </form>

@@ -3,11 +3,11 @@ import { Subject } from "rxjs";
 
 export class TodoCompletedService {
     todos: Todo[] = [];
-
     searchField: string = '';
+    updateCompletedFilteredTodos = new Subject<Todo[]>();
+    updateSuggestedTitles = new Subject<string[]>();
+    suggestTitle: string[] = [];
 
-    updateCompletedTodos = new Subject<Todo[]>();
-    
     getFilteredTodos() {
         const filteredTodos: Todo[] = [];
         this.todos.forEach((todo) => {
@@ -33,12 +33,17 @@ export class TodoCompletedService {
 
     setTodos(todos: Todo[]) {
         this.todos = todos;
-        this.updateCompletedTodos.next(this.getFilteredTodos());
+        this.suggestTitle = [];
+        todos.forEach((todo: Todo) => {
+            this.suggestTitle.push(todo.title);
+        })
+        this.updateSuggestedTitles.next(this.suggestTitle.slice());
+        this.updateCompletedFilteredTodos.next(this.getFilteredTodos());
     }
 
     updateFilter(newFilter: string) {
         this.searchField = newFilter;
-        this.updateCompletedTodos.next(this.getFilteredTodos());
+        this.updateCompletedFilteredTodos.next(this.getFilteredTodos());
     }
-    
+
 }

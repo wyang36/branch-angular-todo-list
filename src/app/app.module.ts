@@ -6,9 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from "@angular/router";
 
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { HomeComponent } from './home/home.component';
-import { ModalsComponent } from './home/modals/modals.component';
+import { NavigationComponent } from './core/navigation/navigation.component';
+import { HomeComponent } from './core/home/home.component';
+import { ModalsComponent } from './core/modals/modals.component';
 
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
 import { TodoListAddComponent } from './todo-lists/todo-list-add/todo-list-add.component';
