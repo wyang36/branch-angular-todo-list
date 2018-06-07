@@ -11,9 +11,9 @@
   <a class="item" routerLinkActive="active" routerLink="/completed">
     View Completed
   </a>
-  <div class="item" *ngIf="isViewingCompleted">
+  <div class="vertically fitted item" *ngIf="isViewingCompleted">
     <div class="ui search">
-      <div class="ui icon input">
+      <div class="ui small icon input">
         <input type="text" placeholder="Search..." [(ngModel)]="searchField" (ngModelChange)="onFilterChange()">
         <i class="search icon"></i>
       </div>
