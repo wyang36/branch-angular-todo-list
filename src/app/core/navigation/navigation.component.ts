@@ -52,5 +52,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
   onFilterSelect(chosenTitle: string) {
     this.searchField = chosenTitle;
     this.onFilterChange();
+    this.filteredOptions = [];
   }
 }
