@@ -3,7 +3,6 @@ import { TodoListService } from '../todo-list.service';
 import { Subscription } from 'rxjs';
 import { Todo } from '../todos/todo.model';
 import { TodoService } from './todo.service';
-import { DataStorageService } from '../data-storage.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TodoCompletedService } from './todo-completed.service';
 
@@ -18,7 +17,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   isViewingCompleted: boolean = false;
 
   constructor(private todoListService: TodoListService, private todoService: TodoService,
-    private dataStorageService: DataStorageService, private todoCompletedService: TodoCompletedService,
+    private todoCompletedService: TodoCompletedService,
     private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {

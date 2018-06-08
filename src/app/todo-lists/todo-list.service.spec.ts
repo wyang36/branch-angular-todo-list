@@ -22,15 +22,15 @@ describe('TodoListService', () => {
     ]
 
     beforeEach(() => {
-        const todospy = jasmine.createSpyObj('TodoService', ['setTodos']);
-        const todocompletedspy = jasmine.createSpyObj('TodoCompletedService', ['setTodos']);
+        todoServiceSpy = jasmine.createSpyObj('TodoService', ['setTodos']);
+        todoCompletedServiceSpy = jasmine.createSpyObj('TodoCompletedService', ['setTodos']);
 
         TestBed.configureTestingModule({
             // Provide both the service-to-test and its (spy) dependency
             providers: [
                 TodoListService,
-                { provide: TodoService, useValue: todospy },
-                { provide: TodoCompletedService, useValue: todocompletedspy }
+                { provide: TodoService, useValue: todoServiceSpy },
+                { provide: TodoCompletedService, useValue: todoCompletedServiceSpy }
             ]
         });
         // Inject both the service-to-test and its (spy) dependency

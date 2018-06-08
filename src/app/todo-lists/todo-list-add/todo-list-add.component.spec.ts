@@ -6,7 +6,7 @@ import { TodoListService } from '../todo-list.service';
 import { DataStorageService } from '../data-storage.service';
 import { Router } from '@angular/router';
 
-describe('HomeComponent', () => {
+describe('TodoListAddComponent', () => {
     let component: TodoListAddComponent;
     let fixture: ComponentFixture<TodoListAddComponent>;
 
@@ -14,9 +14,9 @@ describe('HomeComponent', () => {
     let datastorageServiceSpy: jasmine.SpyObj<DataStorageService>;
 
     beforeEach(async(() => {
-        const todolistservicespy = jasmine.createSpyObj('TodoListService', ['setTodos']);
-        const datastoragespy = jasmine.createSpyObj('DataStorageService', ['setTodos']);
-        const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+        todolistServiceSpy = jasmine.createSpyObj('TodoListService', ['addList']);
+        datastorageServiceSpy = jasmine.createSpyObj('DataStorageService', ['addList']);
+        const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
         TestBed.configureTestingModule({
             declarations: [
@@ -26,9 +26,8 @@ describe('HomeComponent', () => {
                 ReactiveFormsModule
             ],
             providers: [
-                TodoListService,
-                { provide: TodoListService, useValue: todolistservicespy },
-                { provide: DataStorageService, useValue: datastoragespy },
+                { provide: TodoListService, useValue: todolistServiceSpy },
+                { provide: DataStorageService, useValue: datastorageServiceSpy },
                 { provide: Router, useValue: routerSpy }
             ]
         })
