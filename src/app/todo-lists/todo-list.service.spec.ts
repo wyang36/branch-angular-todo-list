@@ -41,30 +41,30 @@ describe('TodoListService', () => {
         todoListService.setLists(dummyLists);
     });
 
-    it('#addList should add a list', () => {
+    it('addList should add a list', () => {
         const newList = new TodoList('5', 'new title', [], false);
         todoListService.addList(newList);
         expect(todoListService.getActiveLists().length).toBe(3);
     });
 
-    it('#getActiveListById should return the specified list', () => {
+    it('getActiveListById should return the specified list', () => {
         todoListService.ChooseCurrentList('0');
         expect(todoListService.getActiveListById()).toBe(dummyLists[0]);
     });
 
-    it('#checkIfListExist should return boolean on if a list exist', () => {
+    it('checkIfListExist should return boolean on if a list exist', () => {
         expect(todoListService.checkIfListExist('5')).toBeFalsy;
         expect(todoListService.checkIfListExist('0')).toBeTruthy;
     });
 
-    it('#modifyAddListStatus should modify isAddingList', () => {
+    it('modifyAddListStatus should modify isAddingList', () => {
         todoListService.modifyAddListStatus(true);
         expect(todoListService.isAddingList).toBeTruthy;
         todoListService.modifyAddListStatus(false);
         expect(todoListService.isAddingList).toBeFalsy;
     });
     
-    it('#modifyDeleteListStatus should modify isDeletingList', () => {
+    it('modifyDeleteListStatus should modify isDeletingList', () => {
         todoListService.modifyDeleteListStatus(true);
         expect(todoListService.isDeletingList).toBeTruthy;
         todoListService.modifyDeleteListStatus(false);

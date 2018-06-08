@@ -12,11 +12,11 @@ describe('TodoCompletedService', () => {
         service.setTodos(dummyTodos);
     });
 
-    it('#getAllCompletedTodos should return all set todos', () => {
+    it('getAllCompletedTodos should return all set todos', () => {
         expect(service.getAllCompletedTodos()).toEqual(dummyTodos);
     });
 
-    it('#getFilteredTodos should return filtered todos', () => {
+    it('getFilteredTodos should return filtered todos', () => {
         service.updateFilter('1');
         expect(service.getFilteredTodos()).toEqual([dummyTodos[0]]);
         service.updateFilter('more');
